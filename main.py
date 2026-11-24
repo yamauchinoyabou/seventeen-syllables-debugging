@@ -1,18 +1,34 @@
-"""Write a 5-7-5 haiku about debugging to /output/entry.txt."""
+"""Write a debugging haiku to /output/entry.txt.
+
+Syllable counts: 5-7-5
+    Three a.m. cursor               (5)
+    on the line I swore was fine—   (7)
+    my name in git blame            (5)
+
+The twist: a late-night hunt for the culprit behind a bug ends with
+git blame pointing back at the person debugging. The line "I swore
+was fine" was the debugger's own.
+"""
 
 from pathlib import Path
 
-HAIKU = (
-    "Three a.m. cursor\n"
-    "on the line I swore was fine—\n"
-    "my name in git blame\n"
-)
+OUTPUT_PATH = Path("/output/entry.txt")
+
+HAIKU_LINES = [
+    "Three a.m. cursor",
+    "on the line I swore was fine—",
+    "my name in git blame",
+]
+
+
+def build_content(lines: list[str]) -> bytes:
+    """Join the lines with LF, add a trailing newline, and encode as UTF-8."""
+    return ("\n".join(lines) + "\n").encode("utf-8")
 
 
 def main() -> None:
-    out_dir = Path("/output")
-    out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "entry.txt").write_text(HAIKU, encoding="utf-8", newline="\n")
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_PATH.write_bytes(build_content(HAIKU_LINES))
 
 
 if __name__ == "__main__":
